@@ -17,6 +17,7 @@ for thorn_info in cactus.thorns.values():
         full_output = f"{cactus.config_dir}/build/{thorn_info.name}/{src_file}.o"
         for inc_file in cactus.find_includes(thorn_info.name):
             inc_files += [f"-I{inc_file}"]
+        inc_files += [f"-I{cactus_dir}/{config}/bindings/include/{thorn_info.name}"]
         item = {
             "arguments": [
                              "g++",
