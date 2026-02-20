@@ -2,7 +2,7 @@ import os
 import re
 from typing import List, Dict, Optional
 
-from cactus import Cactus, make_argument_parser
+from cactus_ide.cactus import Cactus, make_argument_parser
 
 providers: Dict[str, str] = dict()
 
@@ -306,16 +306,17 @@ def do_flesh():
         print(buf, file=fd)
 
 ########### START ##############
+def main():
+    global cactus_dir, cactus, config_dir
+    argp, cactus_dir, config = make_argument_parser("CactusCmake")
+    cactus = Cactus(cactus_dir=cactus_dir, config=config)
+    config_dir = cactus.config_dir
+    print(f"Creating '{cactus.cactus_dir}/CMakeLists.txt' based on '{config_dir}' ...")
 
-argp, cactus_dir, config = make_argument_parser("CactusCmake")
-cactus = Cactus(cactus_dir=cactus_dir, config=config)
-config_dir = cactus.config_dir
-print(f"Creating '{cactus.cactus_dir}/CMakeLists.txt' based on '{config_dir}' ...")
-
-with open(f"{cactus_dir}/CMakeLists.txt", "w") as fd:
-    print("cmake_minimum_required(VERSION 3.10)", file=fd)
-    print("project(cactus_sim)", file=fd)
-    print("""
+    with open(f"{cactus_dir}/CMakeLists.txt", "w") as fd:
+        print("cmake_minimum_required(VERSION 3.10)", file=fd)
+        print("project(cactus_sim)", file=fd)
+        print("""
 set(MPI_HOME "/home/sbrandt/spack/var/spack/environments/cactus/.spack-env/view")
 set(MPI_C_COMPILER "${MPI_HOME}/bin/mpicc")
 set(MPI_CXX_COMPILER "${MPI_HOME}/bin/mpicxx")
@@ -373,32 +374,35 @@ target_include_directories(
       #${MPI_C_INCLUDE_DIRS}
 )
 """.replace("<cactus>", cactus_dir) \
-          .replace("<config>", config) \
-          .replace("<LINK_OPTS>", "\n".join(cactus.link_options)), file=fd)
-    do_flesh()
-    thorn_list:List[str] = list()
-    with open(f"{cactus_dir}/configs/{config}/ThornList", "r") as fth:
-        for line in fth.readlines():
-            if g := re.match(r'^(\w+)/(\w+)', line):
-                thorn = g.group(2)
-                thorn_list.append(thorn)
-    for thorn in thorn_list:
-        do_thorn(cactus, thorn)
-        print(f"include(configs/{config}/CMake_{thorn}.txt)", file=fd)
-    print(f"include(configs/{config}/CMake_Cactus.txt)", file=fd)
-    print(f"target_link_libraries(cactus_{config}", file=fd)
-    for thorn in thorn_list:
-        pass #print(f'    thorn_{thorn}', file=fd)
-    #print(f"    thorn_Cactus", file=fd)
-    thorn_list += ["Cactus"]
-    #print("    ${MPI_C_LIBRARIES}",file=fd)
-    #print("    adios2_fortran_mpi adios2_cxx11_mpi adios2_core_mpi adios2_fortran adios2_cxx11 adios2_c adios2_core",file=fd)
-    #print("    /home/sbrandt/Cactus/configs/waveeqn/scratch/external/AMReX/lib/libamrex.a",file=fd)
-    for lib in cactus.link_libraries:
-        pass #print("   ", lib, file=fd)
-    print("    \"$<LINK_GROUP:cross_refs,thorn_" + ",thorn_".join(thorn_list) + "," + ",".join(cactus.link_libraries) + ">\"", file=fd)
-    print(")", file=fd)
-#print("file_counter:", file_counter)
-#print("file_transform_counter:", file_transform_counter)
-#print("percent transformed: %.2f" % (100 * file_transform_counter / file_counter))
-print("Done")
+              .replace("<config>", config) \
+              .replace("<LINK_OPTS>", "\n".join(cactus.link_options)), file=fd)
+        do_flesh()
+        thorn_list:List[str] = list()
+        with open(f"{cactus_dir}/configs/{config}/ThornList", "r") as fth:
+            for line in fth.readlines():
+                if g := re.match(r'^(\w+)/(\w+)', line):
+                    thorn = g.group(2)
+                    thorn_list.append(thorn)
+        for thorn in thorn_list:
+            do_thorn(cactus, thorn)
+            print(f"include(configs/{config}/CMake_{thorn}.txt)", file=fd)
+        print(f"include(configs/{config}/CMake_Cactus.txt)", file=fd)
+        print(f"target_link_libraries(cactus_{config}", file=fd)
+        for thorn in thorn_list:
+            pass #print(f'    thorn_{thorn}', file=fd)
+        #print(f"    thorn_Cactus", file=fd)
+        thorn_list += ["Cactus"]
+        #print("    ${MPI_C_LIBRARIES}",file=fd)
+        #print("    adios2_fortran_mpi adios2_cxx11_mpi adios2_core_mpi adios2_fortran adios2_cxx11 adios2_c adios2_core",file=fd)
+        #print("    /home/sbrandt/Cactus/configs/waveeqn/scratch/external/AMReX/lib/libamrex.a",file=fd)
+        for lib in cactus.link_libraries:
+            pass #print("   ", lib, file=fd)
+        print("    \"$<LINK_GROUP:cross_refs,thorn_" + ",thorn_".join(thorn_list) + "," + ",".join(cactus.link_libraries) + ">\"", file=fd)
+        print(")", file=fd)
+    #print("file_counter:", file_counter)
+    #print("file_transform_counter:", file_transform_counter)
+    #print("percent transformed: %.2f" % (100 * file_transform_counter / file_counter))
+    print("Done")
+
+if __name__ == "__main__":
+    main()
