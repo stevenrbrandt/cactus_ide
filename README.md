@@ -25,3 +25,23 @@ in the configs directory.
 
 This CMakeLists.txt cannot yet be used to build Cactus, but it will
 help CLion in following include files and defining symbols.
+
+## To use with vim
+
+Step one, make sure you have the following installed:
+
+    apt install -y nodejs npm clangd
+
+Add the following to your ~/.vimrc
+
+    call plug#begin()
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    call plug#end()
+    " Go to definition
+    nmap <silent> gd <Plug>(coc-definition)
+    " Go to type definition (useful for classes/templates)
+    nmap <silent> gy <Plug>(coc-type-definition)
+    " Go to implementation
+    nmap <silent> gi <Plug>(coc-implementation)
+    " Find references
+    nmap <silent> gr <Plug>(coc-references)

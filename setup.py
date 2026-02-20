@@ -18,5 +18,6 @@ setup(
         'create_cmake=cactus_ide.CactusCmake:main'
     ],
   },
-  packages=['cactus_ide']
+  packages=['cactus_ide'],
+  install_requires=['piraha']
 )
