@@ -98,7 +98,7 @@ class Cactus:
                     arr = g.group(1)
                     thorn_name = g.group(2)
                     thorn_dir = f"{self.cactus_dir}/arrangements/{arr}/{thorn_name}"
-                    assert os.path.exists(f"{thorn_dir}/param.ccl")
+                    assert os.path.exists(f"{thorn_dir}/param.ccl"), f"Could not find '{thorn_dir}/param.ccl'"
                     r, p = self._requires_and_provides(thorn_dir)
                     sf = find_src_files(thorn_dir)
                     self.thorns[thorn_name] = ThornInfo(thorn_name, arr, thorn_dir, r, p, sf)
@@ -207,7 +207,7 @@ if __name__ == "__main__":
     for thorn in cactus.thorns.values():
         #print(thorn)
         #print(thorn.src_files)
-        print(cactus.find_includes(thorn.name))
+        cactus.find_includes(thorn.name)
         pass
     # print(cactus.providers)
     # print(cactus.capabilities)

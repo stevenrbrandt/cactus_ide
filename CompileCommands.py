@@ -9,7 +9,7 @@ cactus = Cactus(cactus_dir=cactus_dir, config=config)
 jdata = list()
 for thorn_info in cactus.thorns.values():
     if thorn_info.name == "Cactus":
-        print(thorn_info)
+        pass #print(thorn_info)
     for src_file in thorn_info.src_files:
         inc_files = list()
         full_src_file = f"{thorn_info.dir}/src/{src_file}"
@@ -64,5 +64,4 @@ for thorn_info in cactus.thorns.values():
 
 with open("compile_commands.json", "w") as fd:
     json.dump(jdata, fd, indent=2)
-
-print("Working Directory:", os.getcwd())
+    print("compile_commands.json is generated")
