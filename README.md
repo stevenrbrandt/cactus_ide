@@ -8,7 +8,7 @@ The ET has a unique/non-standard way of generating headers and building, making 
 
     pip install git+https://github.com/stevenrbrandt/cactus_ide.git
 
-## To use with VSCode:
+## To use with VSCode or vim (for vim setup, see below):
     
     create_compile_commands --cactus-root ~/Cactus --config sim
 
@@ -28,11 +28,13 @@ help CLion in following include files and defining symbols.
 
 ## To use with vim
 
-Step one, make sure you have the following installed:
+Setp zero: Generate the compile-commands.json file
+
+Step one: Make sure you have the following installed:
 
     apt install -y nodejs npm clangd
 
-Add the following to your ~/.vimrc
+Step two: Add the following to your ~/.vimrc
 
     call plug#begin()
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -46,12 +48,14 @@ Add the following to your ~/.vimrc
     " Find references
     nmap <silent> gr <Plug>(coc-references)
 
-Run this command to enable plugins:
+Step 3: Run this command to enable plugins:
 
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-When you start up vim, run the following two commands:
+Step 4: When you start up vim, run the following two commands:
 
     :PlugInstall
     :CocInstall coc-clangd
+
+You are now good to go! You can type "gd" to go to a definition and Ctrl-o to return.
