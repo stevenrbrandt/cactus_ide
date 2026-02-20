@@ -276,10 +276,10 @@ def do_flesh():
                 buf = re.sub(r'<ARR>', arr, buf)
                 buf = re.sub(r'<FILE>', src_file, buf)
                 buf2 += "    ${BUILD}/Cactus/" + src_file + "\n"
-                print(">> SRC_FILE:", src_file)
+                #print(">> SRC_FILE:", src_file)
                 c_file_procs += buf
             else:
-                print("SKIP>>", src_file)
+                pass #print("SKIP>>", src_file)
 
 
     incs = cactus.find_includes( "Cactus")
