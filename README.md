@@ -1,4 +1,9 @@
 # Cactus IDE
+
+This utility is designed to make it easier to work on the [Einstein Toolkit](https://einsteintoolkit.org).
+
+The ET has a unique/non-standard way of generating headers and building, making it difficult for ET programmers to benefit from IDEs. This utility helps by creating either a compile-commands.json or a CMakeLists.txt file that will help the editors navigate headers and identify symbols.
+
 ## To install:
 
     pip install git+https://github.com/stevenrbrandt/cactus_ide.git
