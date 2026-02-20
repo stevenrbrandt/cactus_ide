@@ -45,3 +45,13 @@ Add the following to your ~/.vimrc
     nmap <silent> gi <Plug>(coc-implementation)
     " Find references
     nmap <silent> gr <Plug>(coc-references)
+
+Run this command to enable plugins:
+
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+When you start up vim, run the following two commands:
+
+    :PlugInstall
+    :CocInstall coc-clangd
