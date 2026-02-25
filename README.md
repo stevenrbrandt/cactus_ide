@@ -32,7 +32,26 @@ Setp zero: Generate the compile-commands.json file
 
 Step one: Make sure you have the following installed:
 
+    # On Ubuntu/Debian
     apt install -y nodejs npm clangd
+
+If you do not have root, you can install the prerequisites like this:
+
+    # if clangd isn't available on your system, you can install it like this:
+    cd llvm-project/
+    cmake -S llvm -B build -DLLVM_ENABLE_ZSTD=OFF -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra' -DCMAKE_INSTALL_PREFIX=/project/sbrandt/llvm-install -DCMAKE_BUILD_TYPE=Release
+    make -j8 install
+
+    # You'll need nvm/node. If it's not available, you can install it like this:
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+    nvm install --lts
+    nvm install node
+
+Note that clangd should be in your path. If it's not, you should set your ~/.vim/coc-settings.json like this:
+
+    {
+      "clangd.path": "/project/sbrandt/llvm-install/bin/clangd"
+    }
 
 Step two: Add the following to your ~/.vimrc
 
