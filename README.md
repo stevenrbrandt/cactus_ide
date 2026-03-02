@@ -2,7 +2,7 @@
 
 This utility is designed to make it easier to work on the [Einstein Toolkit](https://einsteintoolkit.org).
 
-The ET has a unique/non-standard way of generating headers and building, making it difficult for ET programmers to benefit from IDEs. This utility helps by creating either a compile-commands.json or a CMakeLists.txt file that will help the editors navigate headers and identify symbols.
+The ET has a unique/non-standard way of generating headers and building, making it difficult for ET programmers to benefit from IDEs. This utility helps by creating either a compile_commands.json or a CMakeLists.txt file that will help the editors navigate headers and identify symbols.
 
 ## To install:
 
@@ -12,7 +12,7 @@ The ET has a unique/non-standard way of generating headers and building, making 
     
     create_compile_commands --cactus-root ~/Cactus --config sim
 
-The result of this command will be a compile-commands.json file in the
+The result of this command will be a compile_commands.json file in the
 Cactus root directory.
 
 ## To use with CLion
@@ -28,7 +28,7 @@ help CLion in following include files and defining symbols.
 
 ## To use with vim
 
-Setp zero: Generate the compile-commands.json file
+Step zero: Generate the compile_commands.json file
 
 Step one: Make sure you have the following installed:
 
@@ -38,6 +38,7 @@ Step one: Make sure you have the following installed:
 If you do not have root, you can install the prerequisites like this:
 
     # if clangd isn't available on your system, you can install it like this:
+    git clone --depth 1 https://github.com/llvm/llvm-project.git
     cd llvm-project/
     cmake -S llvm -B build -DLLVM_ENABLE_ZSTD=OFF -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra' -DCMAKE_INSTALL_PREFIX=/project/sbrandt/llvm-install -DCMAKE_BUILD_TYPE=Release
     make -j8 install

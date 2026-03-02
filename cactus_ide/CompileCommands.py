@@ -2,6 +2,7 @@ import os
 
 from cactus_ide.cactus import Cactus, ThornInfo, make_argument_parser
 import json
+import re
 
 def main():
     argp, cactus_dir, config = make_argument_parser("CompileCommands")
@@ -26,6 +27,19 @@ def main():
             inc_files += [f"-I{cactus.cactus_dir}/configs/{config}/config-data"]
             inc_files += [f"-I{cactus.cactus_dir}/configs/{config}/bindings/include"]
             inc_files += [f"-I{cactus.cactus_dir}/configs/{config}/bindings/include/{thorn_info.name}"]
+
+            ### Process dep files if present
+            dep_dirs = set()
+            if g := re.search(r'/(\w+)/src/(\w+)\.(c\w*)$', full_src_file):
+                dep = f"{cactus_dir}/configs/{config}/build/{g.group(1)}/{g.group(2)}.{g.group(3)}.d"
+                with open(dep, "r") as fd:
+                    dep_contents = fd.read()
+                for p in re.finditer(r'(/\S+)/[^/\s]+', dep_contents):
+                    dep_dir = p.group(1)
+                    if dep_dir.startswith("/usr") and dep_dir not in dep_dirs:
+                        dep_dirs.add(dep_dir)
+                        inc_files += [f"-I{dep_dir}"]
+
             item = {
                 "arguments": [
                                  "g++",
