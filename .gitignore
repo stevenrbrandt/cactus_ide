@@ -1,0 +1,3 @@
+build/*
+cactus_ide/__pycache__
+cactus_ide.egg-info

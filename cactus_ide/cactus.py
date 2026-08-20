@@ -33,8 +33,7 @@ def find_src_files(thorn_dir:str)->List[str]:
     # TODO: The parsing of make.code.defn leaves much to be desired at the moment
     with open(f"{thorn_dir}/src/make.code.defn", "r") as fd:
         for line in fd.readlines():
-            if line.startswith("#"):
-                continue
+            line = line.split("#", 1)[0]
             for s in re.findall(r'[\w/-]+\.\w+', line):
                 if os.path.exists(f"{thorn_dir}/src/{s}"):
                     src_files.append(s)
